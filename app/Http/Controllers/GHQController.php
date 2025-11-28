@@ -37,12 +37,14 @@ class GHQController extends Controller
             ->user()
             ->hasil()
             ->create([
+                'nomor_registrasi' => date('Ymd') . rand(1000, 9999),
                 'total' => $summedValues,
                 'status_pengerjaan' => $summedValues > 10 ? 'belum selesai' : 'selesai',
                 'ghq_waktu' => now(),
                 'ghq_total' => $summedValues,
                 'last_test' => 'ghq12',
             ]);
+
 
         $ghq_answers = $hasil->ghqAnswers()->create(
             array_merge(

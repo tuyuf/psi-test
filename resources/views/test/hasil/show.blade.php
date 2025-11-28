@@ -94,54 +94,44 @@
 
 <body>
 
-    <div class="container">
-        <div class="header">
-            LAPORAN HASIL SCREENING KESEHATAN MENTAL<br>
-            TIM FAKULTAS PSIKOLOGI UNIVERSITAS DIPONEGORO
-        </div>
+   <div class="container">
+    <div class="header">
+        LAPORAN HASIL SCREENING KESEHATAN MENTAL<br>
+        TIM FAKULTAS PSIKOLOGI UNIVERSITAS DIPONEGORO
+    </div>
 
-        <div class="subheader">
-            <span style="text-align: left">Jl. Prof. Mr. Sunario, Tembalang, Semarang Telp. (024) 7460051
-                &nbsp;&nbsp;&nbsp;&nbsp; </span>
-            <span style="text-align: right">Penanggung Jawab: Psikolog (...)</span>
-        </div>
+    <div class="subheader">
+        Jl. Prof. Mr. Sunario, Tembalang, Semarang Telp. (024) 7460051 &nbsp;&nbsp;&nbsp;&nbsp; Penanggung Jawab: Psikolog (...)
+    </div>
 
-        <div class="line"></div>
+    <div class="line"></div>
 
-        <table class="info-table">
-            <tr>
-                <td>NO. REG</td>
-                <td>: {{ $hasil->id }} </td>
-                <td>(Barcode)</td>
-                <td>: </td>
-            </tr>
-            <tr>
-                <td>NAMA</td>
-                <td><span>:</span> {{ $hasil->user->name }}</td>
-                <td>TANGGAL REG</td>
-                <td>: {{ $hasil->created_at->format('d F Y') }}</td>
-            </tr>
-            <tr>
-                <td>ALAMAT</td>
-                <td><span>:</span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur veniam doloribus
-                    delectus dolor, eveniet suscipit?</td>
-                <td>JENIS KELAMIN</td>
-                <td>: {{ $hasil->user->jenis_kelamin }}</td>
-
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>TGL. LAHIR / USIA</td>
-                <td>: {{ $hasil->user->usia ?? '' }}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>NO. TLP. / HP</td>
-                <td>: {{ $hasil->user->no_tlp ?? '' }}</td>
-            </tr>
-        </table>
+    <table class="info-table">
+        <tr>
+            <td>NO. REG</td>
+            <td>: {{ $hasil->user->nomor_registrasi ?? '-' }}</td>
+            <td>NAMA</td>
+            <td>: {{ $hasil->user->name ?? '-' }}</td>
+        </tr>
+        <tr>
+            <td>ALAMAT</td>
+            <td>: {{ $hasil->user->alamat ?? '-' }}</td>
+            <td>TANGGAL REG</td>
+            <td>: {{ $hasil->created_at ? $hasil->created_at->format('d-m-Y') : '-' }}</td>
+        </tr>
+        <tr>
+            <td>JENIS KELAMIN</td>
+            <td>: {{ $hasil->user->jenis_kelamin ?? '-' }}</td>
+            <td>TGL. LAHIR / USIA</td>
+            <td>: {{ $hasil->user->usia ? $hasil->user->usia . ' Tahun' : '-' }}</td>
+        </tr>
+        <tr>
+            <td>NO. TLP. / HP</td>
+            <td>: {{ $hasil->user->telepon ?? '-' }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
 
         <table class="assessment-table">
             <tr>

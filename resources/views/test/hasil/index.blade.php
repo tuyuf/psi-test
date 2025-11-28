@@ -24,13 +24,61 @@
                     <th style="width: 25%">DASS21</th>
                     <th style="width: 25%">HSCL25</th>
                     <th style="width: 18%">HTQ</th>
+
+                    {{-- Tambahan baru --}}
+                    <th style="width: 15%">Rekomendasi MHSC</th>
+
                     <th style="width: 5%">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($hasils as $hasil)
+                    @php
+                        // ==== LOGIKA REKOMENDASI GABUNGAN ====
+
+                        // GHQ normal jika <= 5
+                        $ghqNormal = $hasil->ghq_total !== null && $hasil->ghq_total <= 5;
+
+                        // DASS ada gejala jika melewati cutoff dasar
+                        $dassAdaGejala = $hasil->dass21_depresi !== null &&
+                            ($hasil->dass21_depresi >= 10 ||
+                                $hasil->dass21_kecemasan >= 8 ||
+                                $hasil->dass21_stress >= 15);
+
+                        // HSCL bermasalah jika ≥ 1.75
+                        $hsclBermasalah = $hasil->hscl25_total !== null &&
+                            ($hasil->hscl25_depresiDSM4 >= 1.75 ||
+                                $hasil->hscl25_kecemasan >= 1.75 ||
+                                $hasil->hscl25_total >= 1.75);
+
+                        // HTQ bermasalah jika ≥ 2.5
+                        $htqBermasalah = $hasil->htq_total !== null &&
+                            ($hasil->htq_depresiDSM4 >= 2.5 || $hasil->htq_total >= 2.5);
+
+                        // Default Rekomendasi
+                        $badgeClass = 'success';
+                        $judul = 'Self-help';
+                        $detail = 'Tetap pelihara kesehatan mental Anda, karena saat ini kondisinya cukup baik dan stabil.';
+
+                        // Level tertinggi: Rujuk
+                        if ($hsclBermasalah || $htqBermasalah) {
+                            $badgeClass = 'danger';
+                            $judul = 'Rujuk Psikolog Klinis/Psikiater';
+                            $detail =
+                                'Anda disarankan berkonsultasi dengan psikolog klinis atau psikiater yang Anda percaya.';
+                        }
+                        // Level menengah: konseling
+                        elseif ($dassAdaGejala || !$ghqNormal) {
+                            $badgeClass = 'warning';
+                            $judul = 'Konseling psikologis';
+                            $detail = 'Anda disarankan mengikuti konseling psikologis untuk membahas gejala Anda.';
+                        }
+                    @endphp
+
                     <tr>
                         <td>{{ $hasil->created_at->format('l, d F Y') }}</td>
+
+                        {{-- GHQ --}}
                         <td>
                             Nilai : {{ $hasil->ghq_total }}
                             <br>
@@ -48,10 +96,11 @@
                                 <p>Rekomendasi : </p>
                             @endif
                         </td>
+
+                        {{-- DASS --}}
                         <td>
                             @if ($hasil->last_test != 'ghq12')
-                                Depresi: {{ $hasil->dass21_depresi }}
-                                <br>
+                                Depresi: {{ $hasil->dass21_depresi }}<br>
                                 @if ($hasil->dass21_depresi < 10)
                                     <span class="badge badge-success">Normal</span>
                                 @elseif ($hasil->dass21_depresi < 14)
@@ -63,10 +112,8 @@
                                 @else
                                     <span class="badge badge-danger">Sangat Parah</span>
                                 @endif
-
-                                <br>
-                                Kecemasan: {{ $hasil->dass21_kecemasan }}
-                                <br>
+                                <br><br>
+                                Kecemasan: {{ $hasil->dass21_kecemasan }}<br>
                                 @if ($hasil->dass21_kecemasan < 8)
                                     <span class="badge badge-success">Normal</span>
                                 @elseif ($hasil->dass21_kecemasan < 10)
@@ -78,9 +125,8 @@
                                 @else
                                     <span class="badge badge-danger">Sangat Parah</span>
                                 @endif
-                                <br>
-                                Stress: {{ $hasil->dass21_stress }}
-                                <br>
+                                <br><br>
+                                Stress: {{ $hasil->dass21_stress }}<br>
                                 @if ($hasil->dass21_kecemasan < 15)
                                     <span class="badge badge-success">Normal</span>
                                 @elseif ($hasil->dass21_kecemasan < 19)
@@ -93,7 +139,9 @@
                                     <span class="badge badge-danger">Sangat Parah</span>
                                 @endif
                                 <br><br>
-                                @if ($hasil->dass21_kecemasan < 8 && $hasil->dass21_depresi < 10 && $hasil->dass21_stress < 19)
+                                @if ($hasil->dass21_kecemasan < 8 &&
+                                        $hasil->dass21_depresi < 10 &&
+                                        $hasil->dass21_stress < 19)
                                     <p>Rekomendasi : Psikoedukasi</p>
                                 @else
                                     <p>Rekomendasi : </p>
@@ -102,10 +150,11 @@
                                 Tidak Dikerjakan
                             @endif
                         </td>
+
+                        {{-- HSCL --}}
                         <td>
                             @if ($hasil->last_test != 'ghq12' && $hasil->last_test != 'dass-21')
-                                Depresi: {{ $hasil->hscl25_depresiDSM4 }}
-                                <br>
+                                Depresi: {{ $hasil->hscl25_depresiDSM4 }}<br>
                                 @if ($hasil->hscl25_depresiDSM4 < 1.75)
                                     <span class="badge badge-success">Normal</span>
                                 @else
@@ -113,23 +162,24 @@
                                 @endif
 
                                 <br>
-                                Kecemasan: {{ $hasil->hscl25_kecemasan }}
-                                <br>
+                                Kecemasan: {{ $hasil->hscl25_kecemasan }}<br>
                                 @if ($hasil->hscl25_kecemasan < 1.75)
                                     <span class="badge badge-success">Normal</span>
                                 @else
                                     <span class="badge badge-danger">Tinggi</span>
                                 @endif
+
                                 <br>
-                                Total: {{ $hasil->hscl25_total }}
-                                <br>
+                                Total: {{ $hasil->hscl25_total }}<br>
                                 @if ($hasil->hscl25_total < 1.75)
                                     <span class="badge badge-success">Normal</span>
                                 @else
                                     <span class="badge badge-danger">Tinggi</span>
                                 @endif
                                 <br><br>
-                                @if ($hasil->hscl25_depresiDSM4 < 1.75 && $hasil->hscl25_kecemasan < 1.75 && $hasil->hscl25_total < 1.75)
+                                @if ($hasil->hscl25_depresiDSM4 < 1.75 &&
+                                        $hasil->hscl25_kecemasan < 1.75 &&
+                                        $hasil->hscl25_total < 1.75)
                                     <p>Rekomendasi : Psikoedukasi</p>
                                 @else
                                     <p>Rekomendasi : </p>
@@ -138,10 +188,13 @@
                                 Tidak Dikerjakan
                             @endif
                         </td>
+
+                        {{-- HTQ --}}
                         <td>
-                            @if ($hasil->last_test != 'ghq12' && $hasil->last_test != 'dass-21' && $hasil->last_test != 'hscl-25')
-                                Depresi: {{ $hasil->htq_depresiDSM4 }}
-                                <br>
+                            @if ($hasil->last_test != 'ghq12' &&
+                                $hasil->last_test != 'dass-21' &&
+                                $hasil->last_test != 'hscl-25')
+                                Depresi: {{ $hasil->htq_depresiDSM4 }}<br>
                                 @if ($hasil->htq_depresiDSM4 < 2.5)
                                     <span class="badge badge-success">Normal</span>
                                 @else
@@ -149,14 +202,17 @@
                                 @endif
 
                                 <br>
-                                Total: {{ $hasil->htq_total }}
-                                <br>
+                                Total: {{ $hasil->htq_total }}<br>
                                 @if ($hasil->htq_total < 2.5)
                                     <span class="badge badge-success">Normal</span>
                                 @else
                                     <span class="badge badge-danger">Tinggi</span>
                                 @endif
-                                @if ($hasil->htq_depresiDSM4 < 1.75 && $hasil->hscl25_kecemasan < 1.75 && $hasil->hscl25_total < 1.75)
+
+                                <br><br>
+                                @if ($hasil->htq_depresiDSM4 < 2.5 &&
+                                        $hasil->hscl25_kecemasan < 1.75 &&
+                                        $hasil->hscl25_total < 1.75)
                                     <p>Rekomendasi : Psikoedukasi</p>
                                 @else
                                     <p>Rekomendasi : </p>
@@ -165,6 +221,15 @@
                                 Tidak Dikerjakan
                             @endif
                         </td>
+
+                        {{-- ⭐ REKOMENDASI MHSC (kolom baru) --}}
+                        <td>
+                            <span class="badge badge-{{ $badgeClass }}">{{ $judul }}</span>
+                            <br>
+                            <small>{{ $detail }}</small>
+                        </td>
+
+                        {{-- Aksi --}}
                         <td>
                             @if ($hasil->id == $latestHasilId)
                                 <a target="_blank" href="{{ route('hasil.show', ['hasil' => $hasil]) }}">Lihat</a>
@@ -173,9 +238,6 @@
                         </td>
                     </tr>
                 @empty
-                    {{-- <tr>
-                            <td colspan="6" class="text-center">Tidak ada data</td>
-                        </tr> --}}
                 @endforelse
             </tbody>
         </table>

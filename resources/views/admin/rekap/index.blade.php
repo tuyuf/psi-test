@@ -25,6 +25,7 @@
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
+        {{-- TAB DASHBOARD --}}
         <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
             <div class="container-fluid py-4">
                 <div class="d-flex flex-column align-items-center">
@@ -42,7 +43,8 @@
                         <button type="submit" class="btn btn-primary mb-2">Filter</button>
                     </form>
                 </div>
-                {{-- Charts Row 1 --}}
+
+                {{-- Charts Row 1: Card summary --}}
                 <div class="row mb-3">
                     {{-- Jumlah Responden Tes --}}
                     <div class="col mb-4 mb-lg-0">
@@ -65,6 +67,7 @@
                     </div>
                 </div>
 
+                {{-- Charts Row 2: jumlah tes per instrumen --}}
                 <div class="row mb-3">
                     {{-- Jumlah Tes GHQ yang dikerjakan  --}}
                     <div class="col mb-4 mb-lg-0">
@@ -104,13 +107,12 @@
                     </div>
                 </div>
 
-                <!-- Charts Row 2 -->
+                <!-- Charts Row 3: GHQ & DASS21 -->
                 <div class="row mb-3">
-                    <!-- DASS21 Chart -->
+                    <!-- GHQ Chart -->
                     <div class="col-lg-6 mb-4 mb-lg-0">
                         <div class="card shadow-sm">
                             <div class="card-body">
-
                                 <canvas id="ghqChart" style="height: 300px"></canvas>
                             </div>
                         </div>
@@ -124,8 +126,10 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- Charts Row 4: HSCL & HTQ --}}
                 <div class="row">
-                    <!-- DASS21 Chart -->
+                    <!-- HSCL25 Chart -->
                     <div class="col-lg-6 mb-4 mb-lg-0">
                         <div class="card shadow-sm">
                             <div class="card-body">
@@ -133,7 +137,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- DASS21 Chart -->
+                    <!-- HTQ Chart -->
                     <div class="col-lg-6 mb-4 mb-lg-0">
                         <div class="card shadow-sm">
                             <div class="card-body">
@@ -142,8 +146,68 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- ===================== DEMOGRAFI ===================== --}}
+                {{-- Row: Card total laki / perempuan --}}
+                <div class="row mt-4 mb-3">
+                    <div class="col-md-6 mb-4 mb-md-0">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <h3 class="text-dark" style="font-weight: 600" id="totalLaki">0</h3>
+                                <h6 class="text-dark" style="font-weight: 600">Responden Laki-laki</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4 mb-md-0">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <h3 class="text-dark" style="font-weight: 600" id="totalPerempuan">0</h3>
+                                <h6 class="text-dark" style="font-weight: 600">Responden Perempuan</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Row: Jenis Kelamin & Usia --}}
+                <div class="row mb-3">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <canvas id="genderChart" style="height:300px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <canvas id="usiaChart" style="height:300px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Row: Masa Kerja & Unit Kerja --}}
+                <div class="row mb-3">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <canvas id="masaKerjaChart" style="height:300px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <canvas id="unitKerjaChart" style="height:300px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- ===================================================== --}}
             </div>
         </div>
+
+        {{-- TAB TABEL --}}
         <div class="tab-pane fade" id="table" role="tabpanel" aria-labelledby="table-tab">
             <div class="table-responsive mt-3">
                 <table class="table table-bordered mt-3" id="dataTable" width="100%" cellspacing="0">
@@ -298,15 +362,14 @@
                                 </td>
                             </tr>
                         @empty
-                            {{-- <tr>
-                            <td colspan="6" class="text-center">Tidak ada data</td>
-                        </tr> --}}
                         @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    {{-- Toast notif --}}
     <div class="position-fixed bottom-0 right-0 p-3" style="z-index: 5; right:0 ; top: 0;">
         <div id="liveToastBerhasil" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
             data-delay="10000">
@@ -349,6 +412,9 @@
             });
 
             let ghqChart, dass21Chart, hscl25Chart, htqChart = null;
+            let genderChart, usiaChart, masaKerjaChart, unitKerjaChart = null;
+
+            // ================== CHART TES ==================
 
             // function to draw ghq chart
             function drawGhqChart(response) {
@@ -385,7 +451,7 @@
                                 }
                             },
                             legend: {
-                                'position': 'bottom'
+                                position: 'bottom'
                             },
                             tooltip: {
                                 callbacks: {
@@ -393,7 +459,7 @@
                                         const label = context.label || '';
                                         const value = context.raw || 0;
                                         const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                        const percentage = ((value / response.data.jumlah_ghq) * 100).toFixed(1);
+                                        const percentage = total > 0 ? ((value / response.data.jumlah_ghq) * 100).toFixed(1) : 0;
                                         return `${label}: ${value} (${percentage}%)`;
                                     }
                                 }
@@ -403,7 +469,7 @@
                 });
             }
 
-            // function to draw ghq chart
+            // function to draw DASS chart
             function drawDassChart(response) {
                 if (dass21Chart) {
                     dass21Chart.destroy();
@@ -413,11 +479,12 @@
                 dass21Chart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ['Gejala Depresi (D ≥ 21)', 'Gejala Cemas (A ≥ 20)',
+                        labels: [
+                            'Gejala Depresi (D ≥ 21)',
+                            'Gejala Cemas (A ≥ 20)',
                             'Gejala Stress (S ≥ 34)'
                         ],
                         datasets: [{
-
                             data: [
                                 response.data.dass21_depresi,
                                 response.data.dass21_cemas,
@@ -428,7 +495,6 @@
                                 'rgba(54, 162, 235, 0.8)',
                                 'rgba(255, 205, 86, 0.8)'
                             ],
-
                         }]
                     },
                     options: {
@@ -451,7 +517,7 @@
                                         const label = context.label || '';
                                         const value = context.raw || 0;
                                         const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                        const percentage = ((value / response.data.jumlah_dass21) * 100).toFixed(1);
+                                        const percentage = total > 0 ? ((value / response.data.jumlah_dass21) * 100).toFixed(1) : 0;
                                         return `${label}: ${value} (${percentage}%)`;
                                     }
                                 }
@@ -471,9 +537,7 @@
                 hscl25Chart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ['Gangguan Mixed', 'Gangguan Cemas',
-                            'Gangguan Depresi'
-                        ],
+                        labels: ['Gangguan Mixed', 'Gangguan Cemas', 'Gangguan Depresi'],
                         datasets: [{
                             data: [
                                 response.data.hscl25_mixed_anxiety_depression,
@@ -485,7 +549,6 @@
                                 'rgba(54, 162, 235, 0.8)',
                                 'rgba(255, 205, 86, 0.8)'
                             ],
-
                         }]
                     },
                     options: {
@@ -508,7 +571,7 @@
                                         const label = context.label || '';
                                         const value = context.raw || 0;
                                         const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                        const percentage = ((value / response.data.jumlah_hscl25) * 100).toFixed(1);
+                                        const percentage = total > 0 ? ((value / response.data.jumlah_hscl25) * 100).toFixed(1) : 0;
                                         return `${label}: ${value} (${percentage}%)`;
                                     }
                                 }
@@ -528,9 +591,7 @@
                 htqChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ['Gangguan Depresi Trauma',
-                                'Gangguan Cemas Trauma',
-                            ],
+                        labels: ['Gangguan Depresi Trauma', 'Gangguan Cemas Trauma'],
                         datasets: [{
                             label: 'Jumlah Responden',
                             data: [
@@ -556,7 +617,7 @@
                                 }
                             },
                             legend: {
-                                display : false
+                                display: false
                             },
                             tooltip: {
                                 callbacks: {
@@ -564,17 +625,11 @@
                                         const label = context.label || '';
                                         const value = context.raw || 0;
                                         const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                        const percentage = ((value / response.data.jumlah_htq) * 100).toFixed(1);
+                                        const percentage = total > 0 ? ((value / response.data.jumlah_htq) * 100).toFixed(1) : 0;
                                         return `${label}: ${value} (${percentage}%)`;
                                     }
                                 }
                             },
-                            layout: {
-                                padding: {
-                                    top: 20 // Add padding at the top to prevent clipping of the legend
-                                }
-                            }
-
                         }
                     }
                 });
@@ -590,7 +645,7 @@
                 $('#jumlahHTQ').text(response.data.jumlah_htq);
             }
 
-            // function to fetch data from database
+            // function to fetch data from database (tes)
             function fetchData(start_date = null, end_date = null) {
                 $.ajax({
                     url: "{{ route('admin.rekap.bar-chart-data') }}",
@@ -600,7 +655,6 @@
                         end_date
                     } : {},
                     success: function(response) {
-
                         drawGhqChart(response);
                         drawDassChart(response);
                         drawHsclChart(response);
@@ -611,17 +665,306 @@
                     error: function(error) {
                         $('#liveToastError').toast('show');
                     }
-
                 });
             }
 
+            // ================== DEMOGRAFI ==================
+
+            function drawDemografiCharts(data) {
+                const usia = data.usia || [];
+                const masaKerja = data.masa_kerja || [];
+                const jenisKelamin = data.jenis_kelamin || [];
+                const unitKerja = data.unit_kerja || [];
+
+                // --- Jenis Kelamin ---
+                let totalLaki = 0;
+                let totalPerempuan = 0;
+                let totalLain = 0;
+
+                jenisKelamin.forEach(jk => {
+                    if (!jk) return;
+                    const v = jk.toString().toLowerCase();
+                    if (v.includes('laki')) {
+                        totalLaki++;
+                    } else if (v.includes('perempuan')) {
+                        totalPerempuan++;
+                    } else {
+                        totalLain++;
+                    }
+                });
+
+                $('#totalLaki').text(totalLaki);
+                $('#totalPerempuan').text(totalPerempuan);
+
+                if (genderChart) {
+                    genderChart.destroy();
+                }
+
+                const genderCtx = document.getElementById('genderChart').getContext('2d');
+                genderChart = new Chart(genderCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Laki-laki', 'Perempuan', 'Lain / Tidak mengisi'],
+                        datasets: [{
+                            data: [totalLaki, totalPerempuan, totalLain],
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(255, 99, 132, 0.8)',
+                                'rgba(156, 163, 175, 0.8)'
+                            ],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Distribusi Jenis Kelamin',
+                                font: { size: 16 }
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+
+                // --- Usia (Kelompok non-overlap) ---
+                const usiaBuckets = {
+                    '18-24': 0,
+                    '25-34': 0,
+                    '35-44': 0,
+                    '45-54': 0,
+                    '55+': 0,
+                };
+
+                usia.forEach(u => {
+                    const val = parseInt(u, 10);
+                    if (isNaN(val) || val < 18) return;
+                    if (val >= 18 && val <= 24) usiaBuckets['18-24']++;
+                    else if (val <= 34) usiaBuckets['25-34']++;
+                    else if (val <= 44) usiaBuckets['35-44']++;
+                    else if (val <= 54) usiaBuckets['45-54']++;
+                    else usiaBuckets['55+']++;
+                });
+
+                if (usiaChart) {
+                    usiaChart.destroy();
+                }
+
+                const usiaCtx = document.getElementById('usiaChart').getContext('2d');
+                usiaChart = new Chart(usiaCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(usiaBuckets),
+                        datasets: [{
+                            data: Object.values(usiaBuckets),
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.8)',
+                                'rgba(34, 197, 94, 0.8)',
+                                'rgba(234, 179, 8, 0.8)',
+                                'rgba(239, 68, 68, 0.8)',
+                                'rgba(148, 163, 184, 0.8)',
+                            ],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Distribusi Usia',
+                                font: { size: 16 }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // --- Masa Kerja (bucket sederhana) ---
+                const mkBuckets = {
+                    '0-5 tahun': 0,
+                    '6-10 tahun': 0,
+                    '11-20 tahun': 0,
+                    '>20 tahun': 0,
+                };
+
+                masaKerja.forEach(mk => {
+                    const val = parseInt(mk, 10);
+                    if (isNaN(val) || val < 0) return;
+                    if (val <= 5) mkBuckets['0-5 tahun']++;
+                    else if (val <= 10) mkBuckets['6-10 tahun']++;
+                    else if (val <= 20) mkBuckets['11-20 tahun']++;
+                    else mkBuckets['>20 tahun']++;
+                });
+
+                if (masaKerjaChart) {
+                    masaKerjaChart.destroy();
+                }
+
+                const mkCtx = document.getElementById('masaKerjaChart').getContext('2d');
+                masaKerjaChart = new Chart(mkCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(mkBuckets),
+                        datasets: [{
+                            data: Object.values(mkBuckets),
+                            backgroundColor: [
+                                'rgba(96, 165, 250, 0.8)',
+                                'rgba(52, 211, 153, 0.8)',
+                                'rgba(251, 191, 36, 0.8)',
+                                'rgba(248, 113, 113, 0.8)',
+                            ],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Distribusi Masa Kerja',
+                                font: { size: 16 }
+                            },
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { precision: 0 }
+                            }
+                        }
+                    }
+                });
+
+                // --- Unit Kerja ---
+                const unitList = [
+                    'Kantor Pusat',
+                    'Fakultas Teknik',
+                    'Fakultas Peternakan dan Pertanian',
+                    'Fakultas Perikanan dan Ilmu Kelautan',
+                    'Fakultas Psikologi',
+                    'Fakultas Sain dan Matematika',
+                    'Fakultas Kedokteran',
+                    'Fakultas Kesehatan Masyarakat',
+                    'Fakultas Ekonomika dan Bisnis',
+                    'Fakultas Hukum',
+                    'Fakultas Ilmu Sosial dan Ilmu Politik',
+                    'Fakultas Ilmu Budaya',
+                    'Sekolah Vokasi',
+                    'Sekolah Pasca Sarjana',
+                    'PSDKU',
+                ];
+
+                const unitBuckets = {};
+                unitList.forEach(u => unitBuckets[u] = 0);
+                unitBuckets['Lainnya'] = 0;
+
+                unitKerja.forEach(uk => {
+                    if (!uk) return;
+                    if (unitBuckets.hasOwnProperty(uk)) {
+                        unitBuckets[uk]++;
+                    } else {
+                        unitBuckets['Lainnya']++;
+                    }
+                });
+
+                if (unitKerjaChart) {
+                    unitKerjaChart.destroy();
+                }
+
+                const unitCtx = document.getElementById('unitKerjaChart').getContext('2d');
+                unitKerjaChart = new Chart(unitCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(unitBuckets),
+                        datasets: [{
+                            data: Object.values(unitBuckets),
+                            backgroundColor: [
+                                'rgba(59,130,246,0.8)',
+                                'rgba(34,197,94,0.8)',
+                                'rgba(234,179,8,0.8)',
+                                'rgba(239,68,68,0.8)',
+                                'rgba(56,189,248,0.8)',
+                                'rgba(129,140,248,0.8)',
+                                'rgba(16,185,129,0.8)',
+                                'rgba(250,204,21,0.8)',
+                                'rgba(248,113,113,0.8)',
+                                'rgba(96,165,250,0.8)',
+                                'rgba(74,222,128,0.8)',
+                                'rgba(251,146,60,0.8)',
+                                'rgba(125,211,252,0.8)',
+                                'rgba(216,180,254,0.8)',
+                                'rgba(148,163,184,0.8)',
+                            ],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Distribusi Unit Kerja',
+                                font: { size: 16 }
+                            },
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { precision: 0 }
+                            },
+                            x: {
+                                ticks: {
+                                    maxRotation: 60,
+                                    minRotation: 30,
+                                    autoSkip: false,
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function fetchDemografi() {
+                $.ajax({
+                    url: "{{ route('admin.rekap.demografi') }}",
+                    type: 'GET',
+                    success: function(response) {
+                        if (response && response.success) {
+                            drawDemografiCharts(response.data);
+                        }
+                    },
+                    error: function() {
+                        // kalau gagal demografi, cukup diam (tidak ganggu chart lain)
+                    }
+                });
+            }
+
+            // ================== INIT ==================
+
             fetchData();
+            fetchDemografi();
 
             $('#filterForm').submit(function(e) {
                 e.preventDefault();
                 const startDate = $('#inputStartDate').val();
                 const endDate = $('#inputEndDate').val();
                 fetchData(startDate, endDate);
+                // Demografi TIDAK ikut filter tanggal (sesuai jawabanmu)
             });
 
         });

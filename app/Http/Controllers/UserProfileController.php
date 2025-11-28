@@ -12,36 +12,51 @@ class UserProfileController extends Controller
     public function index()
     {
         $user = auth()->user();
+
+        // Pastikan modal tidak muncul di halaman profil
+        session()->forget('incomplete_profile');
+
+        return view('user-profile.show', compact('user'));
+    }
+
+    public function edit(User $user)
+    {
+        // Hapus session incomplete_profile supaya modal tidak muncul di halaman edit
+        session()->forget('incomplete_profile');
+
         return view('user-profile.show', compact('user'));
     }
 
     public function update(Request $request, User $user)
     {
-        $userId = $user->id; // ID user yang sedang diedit
+        $userId = $user->id;
+
         $rules = [
-            'name' => ['sometimes', 'string', 'max:255'],
-            'username' => ['sometimes', 'numeric', 'max_digits:100', 'unique:users,username,' . $userId],
-            'jenis_kelamin' => ['sometimes', 'string', 'max:255'],
-            'email' => ['sometimes', 'string', 'lowercase', 'email', 'max:255', 'ends_with:undip.ac.id', 'unique:users,email,' . $userId],
-            'password' => ['sometimes', 'confirmed', Password::defaults()],
+            'name'           => ['required', 'string', 'max:255'],
+            'username'       => ['required', 'string', 'unique:users,username,' . $userId . ',id'], // NIP
+            'jenis_kelamin'  => ['required', 'string', 'max:255'],
+            'usia'           => ['required', 'integer', 'min:15', 'max:99'],
+            'masa_kerja'     => ['required', 'integer', 'min:0', 'max:99'],
+            'unit_kerja'     => ['required', 'string', 'max:100'],
+            'alamat'         => ['required', 'string', 'max:255'],
+            'telepon'        => ['nullable', 'numeric', 'max_digits:20'],
+            'health_history' => ['nullable', 'string', 'max:1000'],
+            'email'          => ['required', 'string', 'lowercase', 'email', 'max:255', 'ends_with:undip.ac.id', 'unique:users,email,' . $userId . ',id'],
+            'alternate_email'=> ['nullable', 'string', 'lowercase', 'email', 'max:255', 'unique:users,alternate_email,' . $userId . ',id'],
+            'password'       => ['nullable', 'confirmed', Password::defaults()],
         ];
 
-        // Kalau password kosong, skip validasi password
-        if (!$request->filled('password')) {
-            unset($rules['password']);
+        $validated = $request->validate($rules);
+
+        // Jika password kosong → hapus dari data update
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        } else {
+            $validated['password'] = Hash::make($validated['password']);
         }
 
-        $request->validate($rules);
-
-        $data = $request->only(['name', 'username', 'jenis_kelamin', 'email']);
-
-        // Update password hanya jika diisi
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
-        }
-
-        $user->update($data);
+        $user->update($validated);
 
         return redirect('profile')->with('success', 'Profil berhasil diperbarui');
-    }    
+    }
 }

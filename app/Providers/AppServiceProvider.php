@@ -21,7 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        URL::forceScheme('https');
+        // ✅ Force HTTPS hanya saat di production
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
+
         // Gate check for GHQ test
         Gate::define('can-ghq', function ($user) {
             return $user->hasUnfinishedHasil() == false; // allow if user has no unfinished test
@@ -29,32 +33,32 @@ class AppServiceProvider extends ServiceProvider
 
         // Gate check for DASS-21 test
         Gate::define('can-dass21', function ($user) {
-            return $user->hasUnfinishedHasil() && $user->latestHasil->last_test == 'ghq12'; // allow if user has unfinished test and the last test is DASS-21
+            return $user->hasUnfinishedHasil() && $user->latestHasil->last_test == 'ghq12';
         });
 
         // Gate check for HSCL-25 test
         Gate::define('can-hscl25', function ($user) {
-            return $user->hasUnfinishedHasil() && $user->latestHasil->last_test == 'dass-21'; // allow if user has unfinished test and the last test is HSCL-25
+            return $user->hasUnfinishedHasil() && $user->latestHasil->last_test == 'dass-21';
         });
 
         // Gate check for HTQ test
         Gate::define('can-htq', function ($user) {
-            return $user->hasUnfinishedHasil() && $user->latestHasil->last_test == 'hscl-25'; // allow if user has unfinished test and the last test is HTQ
+            return $user->hasUnfinishedHasil() && $user->latestHasil->last_test == 'hscl-25';
         });
 
         // Gate check for users management
         Gate::define('manage-users', function ($user) {
-            return $user->level == 1; // allow if user is admin
+            return $user->level == 1;
         });
 
         // Gate check for rekap management
         Gate::define('manage-rekap', function ($user) {
-            return $user->level == 1; // allow if user is admin
+            return $user->level == 1;
         });
 
         // Gate check for materials management
         Gate::define('manage-materials', function ($user) {
-            return $user->level == 1; // allow if user is admin
+            return $user->level == 1;
         });
     }
 }
