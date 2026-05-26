@@ -26,7 +26,8 @@ class AdminRekapController extends Controller
             ->with('user');
 
         if ($startDate && $endDate) {
-            $query->whereBetween('created_at', [$startDate, $endDate]);
+            $query->whereDate('created_at', '>=', $startDate)
+                  ->whereDate('created_at', '<=', $endDate);
         }
 
         if ($search) {
@@ -40,8 +41,7 @@ class AdminRekapController extends Controller
         }
 
         if ($jenisKelamin) {
-            $userIds = User::where('level', '!=', 1)
-                ->where('jenis_kelamin', 'like', '%' . $jenisKelamin . '%')
+            $userIds = User::where('jenis_kelamin', 'like', '%' . $jenisKelamin . '%')
                 ->pluck('id');
             $query->whereIn('user_id', $userIds);
         }
@@ -91,8 +91,8 @@ class AdminRekapController extends Controller
         $outerCondition = '';
 
         if ($start && $end) {
-            $innerCondition .= " AND hasils.created_at BETWEEN '{$start}' AND '{$end}'";
-            $outerCondition .= " AND h.created_at BETWEEN '{$start}' AND '{$end}'";
+            $innerCondition .= " AND DATE(hasils.created_at) >= '{$start}' AND DATE(hasils.created_at) <= '{$end}'";
+            $outerCondition .= " AND DATE(h.created_at) >= '{$start}' AND DATE(h.created_at) <= '{$end}'";
         }
 
         if ($search) {
@@ -161,8 +161,7 @@ class AdminRekapController extends Controller
                         MAX(CONCAT(hasils.created_at,'-',hasils.id)) AS latest_test
                     FROM hasils
                     LEFT JOIN users ON hasils.user_id = users.id
-                    WHERE users.level != 1
-                       AND hasils.status_pengerjaan = 'selesai'
+                    WHERE hasils.status_pengerjaan = 'selesai'
                       {$innerCondition}
                     GROUP BY hasils.user_id
                 ) h2
@@ -199,7 +198,8 @@ class AdminRekapController extends Controller
             ->with('user');
 
         if ($start && $end) {
-            $query->whereBetween('created_at', [$start, $end]);
+            $query->whereDate('created_at', '>=', $start)
+                  ->whereDate('created_at', '<=', $end);
         }
 
         $hasils = $query->get();
@@ -254,24 +254,24 @@ class AdminRekapController extends Controller
                 $hasil->user->name ?? '',
                 $hasil->created_at->format('l, d F Y'),
                 $hasil->agreed_to_share_data ? 'Ya' : 'Tidak',
-                $hasil->last_test == 'ghq12' ? '' : $hasil->ghq_total,
-                $hasil->last_test == 'ghq12' ? '' : $ghqStatus,
-                $hasil->last_test == 'ghq12' ? '' : $hasil->dass21_depresi,
-                $hasil->last_test == 'ghq12' ? '' : $dass21SeverityD,
-                $hasil->last_test == 'ghq12' ? '' : $hasil->dass21_kecemasan,
-                $hasil->last_test == 'ghq12' ? '' : $dass21SeverityA,
-                $hasil->last_test == 'ghq12' ? '' : $hasil->dass21_stress,
-                $hasil->last_test == 'ghq12' ? '' : $dass21SeverityS,
-                in_array($hasil->last_test, ['ghq12', 'dass-21']) ? '' : $hasil->hscl25_depresiDSM4,
-                in_array($hasil->last_test, ['ghq12', 'dass-21']) ? '' : $hscl25DepresiStatus,
-                in_array($hasil->last_test, ['ghq12', 'dass-21']) ? '' : $hasil->hscl25_kecemasan,
-                in_array($hasil->last_test, ['ghq12', 'dass-21']) ? '' : $hscl25CemasStatus,
-                in_array($hasil->last_test, ['ghq12', 'dass-21']) ? '' : $hasil->hscl25_total,
-                in_array($hasil->last_test, ['ghq12', 'dass-21']) ? '' : $hscl25TotalStatus,
-                in_array($hasil->last_test, ['ghq12', 'dass-21', 'hscl-25']) ? '' : $hasil->htq_depresiDSM4,
-                in_array($hasil->last_test, ['ghq12', 'dass-21', 'hscl-25']) ? '' : $htqDepresiStatus,
-                in_array($hasil->last_test, ['ghq12', 'dass-21', 'hscl-25']) ? '' : $hasil->htq_total,
-                in_array($hasil->last_test, ['ghq12', 'dass-21', 'hscl-25']) ? '' : $htqTotalStatus,
+                $hasil->ghq_total,
+                $ghqStatus,
+                in_array($hasil->last_test, ['ghq12']) ? 'Tidak Dikerjakan' : $hasil->dass21_depresi,
+                in_array($hasil->last_test, ['ghq12']) ? 'Tidak Dikerjakan' : $dass21SeverityD,
+                in_array($hasil->last_test, ['ghq12']) ? 'Tidak Dikerjakan' : $hasil->dass21_kecemasan,
+                in_array($hasil->last_test, ['ghq12']) ? 'Tidak Dikerjakan' : $dass21SeverityA,
+                in_array($hasil->last_test, ['ghq12']) ? 'Tidak Dikerjakan' : $hasil->dass21_stress,
+                in_array($hasil->last_test, ['ghq12']) ? 'Tidak Dikerjakan' : $dass21SeverityS,
+                in_array($hasil->last_test, ['ghq12', 'dass-21']) ? 'Tidak Dikerjakan' : $hasil->hscl25_depresiDSM4,
+                in_array($hasil->last_test, ['ghq12', 'dass-21']) ? 'Tidak Dikerjakan' : $hscl25DepresiStatus,
+                in_array($hasil->last_test, ['ghq12', 'dass-21']) ? 'Tidak Dikerjakan' : $hasil->hscl25_kecemasan,
+                in_array($hasil->last_test, ['ghq12', 'dass-21']) ? 'Tidak Dikerjakan' : $hscl25CemasStatus,
+                in_array($hasil->last_test, ['ghq12', 'dass-21']) ? 'Tidak Dikerjakan' : $hasil->hscl25_total,
+                in_array($hasil->last_test, ['ghq12', 'dass-21']) ? 'Tidak Dikerjakan' : $hscl25TotalStatus,
+                in_array($hasil->last_test, ['ghq12', 'dass-21', 'hscl-25']) ? 'Tidak Dikerjakan' : $hasil->htq_depresiDSM4,
+                in_array($hasil->last_test, ['ghq12', 'dass-21', 'hscl-25']) ? 'Tidak Dikerjakan' : $htqDepresiStatus,
+                in_array($hasil->last_test, ['ghq12', 'dass-21', 'hscl-25']) ? 'Tidak Dikerjakan' : $hasil->htq_total,
+                in_array($hasil->last_test, ['ghq12', 'dass-21', 'hscl-25']) ? 'Tidak Dikerjakan' : $htqTotalStatus,
             ];
         }
 
@@ -305,12 +305,12 @@ class AdminRekapController extends Controller
         $jenisKelamin = $request->jenis_kelamin;
         $ghqStatus = $request->ghq_status;
 
-        $users = User::where('level', '!=', 1)
-            ->whereHas('hasil', function ($q) use ($start, $end, $search, $lastTest, $jenisKelamin, $ghqStatus) {
+        $users = User::whereHas('hasil', function ($q) use ($start, $end, $search, $lastTest, $jenisKelamin, $ghqStatus) {
                 $q->where('status_pengerjaan', 'selesai');
 
                 if ($start && $end) {
-                    $q->whereBetween('created_at', [$start, $end]);
+                    $q->whereDate('created_at', '>=', $start)
+                      ->whereDate('created_at', '<=', $end);
                 }
 
                 if ($lastTest) {
