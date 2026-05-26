@@ -64,6 +64,7 @@ Route::middleware(['auth', \App\Http\Middleware\CheckProfileCompletion::class])-
     Route::middleware('can:manage-rekap')->group(function () {
         Route::get('/admin/rekap', [AdminRekapController::class, 'index'])->name('admin.rekap');
         Route::get('/admin/rekap/bar-chart-data', [AdminRekapController::class, 'getBarChartData'])->name('admin.rekap.bar-chart-data');
+        Route::get('/admin/rekap/download', [AdminRekapController::class, 'download'])->name('admin.rekap.download');
     });
 
     Route::get('/materials', [MaterialController::class, 'index'])->name('materials');

@@ -7,6 +7,8 @@
     <h2 class="mb-3 text-primary">Tes <span class="text-uppercase">{{ $hasil->last_test }}</span> Selesai</h2>
 
     <div class="alert alert-primary d-flex flex-column align-items-center">
+
+        {{-- ==================== GHQ-12 ==================== --}}
         @if ($hasil->last_test == 'ghq12')
             <p>Terima kasih telah mengisi tes GHQ. Skor tes GHQ anda adalah <strong>{{ $hasil->ghq_total }}</strong></p>
 
@@ -25,6 +27,8 @@
                 </div>
             @endif
         @endif
+
+        {{-- ==================== DASS-21 ==================== --}}
         @if ($hasil->last_test == 'dass-21')
             <p>Terima kasih telah mengisi tes DASS21. Hasil tes DASS21 anda adalah sebagai berikut</p>
 
@@ -39,17 +43,6 @@
                     Skor S : <strong>{{ $hasil->dass21_stress }}</strong>
                 </div>
             </div>
-            {{-- <ul>
-            <li>
-                Skor D : <strong>{{ $hasil->dass21_depresi }}</strong>
-            </li>
-            <li>
-                Skor A : <strong>{{ $hasil->dass21_kecemasan }}</strong>
-            </li>
-            <li>
-                Skor S : <strong>{{ $hasil->dass21_stress }}</strong>
-            </li>
-        </ul> --}}
 
             @if ($hasil->dass21_kecemasan <= 13 && $hasil->dass21_depresi <= 9 && $hasil->dass21_stress <= 18)
                 <div class="alert alert-success" style="width: fit-content">
@@ -82,11 +75,10 @@
                     anda dapat mengakses panduan self-help <a href="{{ Storage::url('public/panduan_self_help.pdf') }}"
                         target="_blank">di sini</a>
                 </div>
-                @if ($hasil->status_pengerjaan == 'selesai')
-                    <x-agreement-checkbox :hasil="$hasil" />    
-                @endif
             @endif
         @endif
+
+        {{-- ==================== HSCL-25 ==================== --}}
         @if ($hasil->last_test == 'hscl-25')
             <p>Terima kasih telah mengisi tes HSCL25. Hasil tes HSCL25 anda adalah sebagai berikut</p>
             <div class="d-flex ">
@@ -100,17 +92,6 @@
                     Rerata Skor : <strong>{{ $hasil->hscl25_total }}</strong>
                 </div>
             </div>
-            {{-- <ul>
-                <li>
-                    Nilai Depresi: <strong>{{ $hasil->hscl25_depresiDSM4 }}</strong>
-                </li>
-                <li>
-                    Nilai Kecemasan: <strong>{{ $hasil->hscl25_kecemasan }}</strong>
-                </li>
-                <li>
-                    Nilai Total: <strong>{{ $hasil->hscl25_total }}</strong>
-                </li>
-            </ul> --}}
 
             @if ($hasil->hscl25_depresiDSM4 <= 1.75 && $hasil->hscl25_kecemasan <= 1.75 && $hasil->hscl25_total <= 1.75)
                 <div class="alert alert-success text-center" style="width: fit-content">
@@ -122,32 +103,15 @@
             @else
                 <div class="alert alert-warning text-center" style="width: fit-content">
                     Anda terindikasi memiliki gejala <strong>gangguan depresi dan gangguan kecemasan</strong>
-                    {{-- Anda memiliki nilai
-                    @if ($hasil->hscl25_depresiDSM4 > 1.75)
-                        <strong>depresi</strong>
-                    @endif
-                    @if ($hasil->hscl25_depresiDSM4 > 1.75)
-                        @if ($hasil->hscl25_kecemasan > 1.75)
-                            ,
-                        @endif
-                        <strong>kecemasan</strong>
-                        @if ($hasil->hscl25_total > 1.75)
-                            ,
-                        @endif
-                    @endif
-                    @if ($hasil->hscl25_total > 1.75)
-                        <strong>total</strong>
-                    @endif yang cenderung tinggi. --}}
                     <br><br>
                     Kondisi mental anda memerlukan perhatian lebih lanjut.
                     <br>
                     Disarankan untuk berkonsultasi dengan profesional terkait hasil asesmen dan intervensi lebih mendalam.
                 </div>
-                @if ($hasil->status_pengerjaan == 'selesai')
-                    <x-agreement-checkbox :hasil="$hasil" />
-                @endif
             @endif
         @endif
+
+        {{-- ==================== HTQ ==================== --}}
         @if ($hasil->last_test == 'htq')
             <p>Terima kasih telah mengisi tes HTQ. Hasil tes HTQ anda adalah sebagai berikut</p>
             <div class="d-flex ">
@@ -157,17 +121,7 @@
                 <div class="alert alert-light text-dark mr-3">
                     Skor Total : <strong>{{ $hasil->htq_total }}</strong>
                 </div>
-
             </div>
-            {{-- <ul>
-                <li>
-                    Nilai Depresi: <strong>{{ $hasil->htq_depresiDSM4 }}</strong>
-                </li>
-
-                <li>
-                    Nilai Total: <strong>{{ $hasil->htq_total }}</strong>
-                </li>
-            </ul> --}}
 
             @if ($hasil->htq_depresiDSM4 <= 2.5 && $hasil->htq_total <= 2.5)
                 <div class="alert alert-success text-center" style="width: fit-content">
@@ -178,26 +132,22 @@
                 </div>
             @else
                 <div class="alert alert-warning text-center" style="width: fit-content">
-                    {{-- Anda memiliki nilai
-                     @if ($hasil->htq_depresiDSM4 > 2.5)
-                        <strong>depresi</strong>
-                    @endif
-                    @if ($hasil->htq_total > 2.5)
-                        @if ($hasil->htq_depresiDSM4 > 2.5)
-                            ,
-                        @endif
-                        <strong>total</strong>
-                    @endif yang cenderung tinggi.
-                    <br>  --}}
                     Anda terindikasi memiliki gejala PTSD.
                     <br>
                     Mohon untuk berkonsultasi dengan profesional terkait untuk evaluasi lebih mendalam.
                 </div>
-                @if ($hasil->status_pengerjaan == 'selesai')
-                    <x-agreement-checkbox :hasil="$hasil" />
-                @endif
             @endif
         @endif
+
+        {{-- ==================== CHECKBOX PERSETUJUAN ==================== --}}
+        {{-- Logika ini ditaruh di luar if-else per test, agar berlaku untuk semua jenis tes --}}
+        {{-- Asalkan status pengerjaan sudah 'selesai', checkbox akan muncul --}}
+        @if ($hasil->status_pengerjaan == 'selesai')
+            <div class="mt-4"></div>
+            <x-agreement-checkbox :hasil="$hasil" />
+        @endif
+
+        {{-- ==================== TOMBOL NAVIGASI ==================== --}}
         @if ($hasil->status_pengerjaan == 'belum selesai')
             <p>Silakan mengerjakan tes selanjutnya untuk mengetahui kondisi mental anda lebih lanjut</p>
             <a href="{{ route('resume-test') }}" class="text-decoration-none"><button
@@ -220,6 +170,8 @@
         <p><strong>Perhatian:</strong> Hasil tes ini bersifat rahasia dan tidak akan disebarkan ke pihak manapun.
         </p>
     </div>
+
+    {{-- TOAST NOTIFICATIONS --}}
     <div class="position-fixed bottom-0 right-0 p-3" style="z-index: 5; right:0 ; top: 0;">
         <div id="liveToastSetuju" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true"
             data-delay="10000">
@@ -264,41 +216,42 @@
     </div>
 
 @endsection
+
 @section('scripts')
     <script>
-        $('#document').ready(function() {
+        $(document).ready(function() {
+            // Gunakan event delegation atau pastikan ID unik jika ada kemungkinan duplikasi
+            // Tapi karena ini halaman detail, ID #setuju1 aman.
             $('#setuju1').on('change', function() {
-               // Ambil status checkbox
-        const isChecked = $(this).is(':checked');
-        const hasil = $(this).data('hasil-id');
-        
-        // Kirim AJAX request
-        $.ajax({
-            url: '/hasil/update-agreement', // Sesuaikan dengan route Anda
-            type: 'POST',
-            data: {
-                agreed_to_share_data: isChecked ? 1 : 0,
-                hasil_id: hasil,
-                _token: $('meta[name="csrf-token"]').attr('content') // CSRF token
-            },
-            success: function(response) {
-                if (isChecked) {
-                    $('#liveToastSetuju').toast('show');
-                    $('#liveToastTolak').toast('hide');
-                } else {
-                    $('#liveToastSetuju').toast('hide');
-                    $('#liveToastTolak').toast('show');
-                }
-            },
-            error: function(xhr, status, error) {
-                // Handle error
-                console.error('Error:', error);
-                $('#liveToastError').toast('show');
-                // alert('Terjadi kesalahan saat memperbarui data');
-            }
-        });
-            })
+                // Ambil status checkbox
+                const isChecked = $(this).is(':checked');
+                const hasil = $(this).data('hasil-id');
 
+                // Kirim AJAX request
+                $.ajax({
+                    url: '/hasil/update-agreement',
+                    type: 'POST',
+                    data: {
+                        agreed_to_share_data: isChecked ? 1 : 0,
+                        hasil_id: hasil,
+                        _token: $('meta[name="csrf-token"]').attr('content') // CSRF token
+                    },
+                    success: function(response) {
+                        if (isChecked) {
+                            $('#liveToastSetuju').toast('show');
+                            $('#liveToastTolak').toast('hide');
+                        } else {
+                            $('#liveToastSetuju').toast('hide');
+                            $('#liveToastTolak').toast('show');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.error('Error:', error);
+                        $('#liveToastError').toast('show');
+                    }
+                });
+            })
         })
     </script>
 @endsection

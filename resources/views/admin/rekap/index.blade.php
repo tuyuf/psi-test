@@ -16,17 +16,17 @@
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="dashboard-tab" data-toggle="tab" data-target="#dashboard" type="button"
-                role="tab" aria-controls="dashboard" aria-selected="true">Dashboard</button>
+            <button class="nav-link {{ request('tab') !== 'table' ? 'active' : '' }}" id="dashboard-tab" data-toggle="tab" data-target="#dashboard" type="button"
+                role="tab" aria-controls="dashboard" aria-selected="{{ request('tab') !== 'table' ? 'true' : 'false' }}">Dashboard</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="table-tab" data-toggle="tab" data-target="#table" type="button" role="tab"
-                aria-controls="table" aria-selected="false">Tabel </button>
+            <button class="nav-link {{ request('tab') === 'table' ? 'active' : '' }}" id="table-tab" data-toggle="tab" data-target="#table" type="button" role="tab"
+                aria-controls="table" aria-selected="{{ request('tab') === 'table' ? 'true' : 'false' }}">Tabel</button>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
         {{-- TAB DASHBOARD --}}
-        <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+        <div class="tab-pane fade {{ request('tab') !== 'table' ? 'show active' : '' }}" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
             <div class="container-fluid py-4">
                 <div class="d-flex flex-column align-items-center">
                     <p>Filter data menurut tanggal</p>
@@ -208,7 +208,83 @@
         </div>
 
         {{-- TAB TABEL --}}
-        <div class="tab-pane fade" id="table" role="tabpanel" aria-labelledby="table-tab">
+        <div class="tab-pane fade {{ request('tab') === 'table' ? 'show active' : '' }}" id="table" role="tabpanel" aria-labelledby="table-tab">
+            <div class="mt-3">
+                <form method="GET" action="{{ route('admin.rekap') }}" id="tableFilterForm">
+                    <input type="hidden" name="tab" value="table">
+
+                    <div class="row mb-2">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tableStartDate">Tanggal Mulai</label>
+                                <input type="date" class="form-control" id="tableStartDate" name="start_date" value="{{ $startDate ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tableEndDate">Tanggal Selesai</label>
+                                <input type="date" class="form-control" id="tableEndDate" name="end_date" value="{{ $endDate ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tableSearch">Cari Nama</label>
+                                <input type="text" class="form-control" id="tableSearch" name="search" value="{{ $search ?? '' }}" placeholder="Cari nama responden...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tableLastTest">Jenis Tes Terakhir</label>
+                                <select class="form-control" id="tableLastTest" name="last_test">
+                                    <option value="">Semua</option>
+                                    <option value="ghq12" {{ ($lastTest ?? '') === 'ghq12' ? 'selected' : '' }}>GHQ-12</option>
+                                    <option value="dass-21" {{ ($lastTest ?? '') === 'dass-21' ? 'selected' : '' }}>DASS-21</option>
+                                    <option value="hscl-25" {{ ($lastTest ?? '') === 'hscl-25' ? 'selected' : '' }}>HSCL-25</option>
+                                    <option value="htq" {{ ($lastTest ?? '') === 'htq' ? 'selected' : '' }}>HTQ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tableJenisKelamin">Jenis Kelamin</label>
+                                <select class="form-control" id="tableJenisKelamin" name="jenis_kelamin">
+                                    <option value="">Semua</option>
+                                    <option value="laki" {{ ($jenisKelamin ?? '') === 'laki' ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="perempuan" {{ ($jenisKelamin ?? '') === 'perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tableGhqStatus">Status GHQ</label>
+                                <select class="form-control" id="tableGhqStatus" name="ghq_status">
+                                    <option value="">Semua</option>
+                                    <option value="normal" {{ ($ghqStatus ?? '') === 'normal' ? 'selected' : '' }}>Normal (&le;5)</option>
+                                    <option value="perhatian" {{ ($ghqStatus ?? '') === 'perhatian' ? 'selected' : '' }}>Perlu Perhatian (6-9)</option>
+                                    <option value="tindak_lanjut" {{ ($ghqStatus ?? '') === 'tindak_lanjut' ? 'selected' : '' }}>Perlu Tindak Lanjut (&ge;10)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-3">
+                        <button type="submit" class="btn btn-primary mr-2">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                        @if (request('start_date') || request('end_date') || request('search') || request('last_test') || request('jenis_kelamin') || request('ghq_status'))
+                            <a href="{{ route('admin.rekap', ['tab' => 'table']) }}" class="btn btn-secondary mr-2">
+                                <i class="fas fa-redo"></i> Reset
+                            </a>
+                        @endif
+                        <a href="{{ route('admin.rekap.download', request()->only(['start_date', 'end_date', 'search', 'last_test', 'jenis_kelamin', 'ghq_status'])) }}" class="btn btn-success" id="downloadCsvBtn">
+                            <i class="fas fa-download"></i> Download CSV
+                        </a>
+                    </div>
+                </form>
+            </div>
             <div class="table-responsive mt-3">
                 <table class="table table-bordered mt-3" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -216,6 +292,7 @@
                             <th style="width: 5%">No</th>
                             <th style="width: 10%">Nama</th>
                             <th style="width: 10%">Waktu Tes</th>
+                            <th style="width: 5%">Share Data</th>
                             <th style="width: 15%">GHQ</th>
                             <th style="width: 15%">DASS21</th>
                             <th style="width: 15%">HSCL25</th>
@@ -229,6 +306,13 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $hasil->user->name }}</td>
                                 <td>{{ $hasil->created_at->format('l, d F Y') }}</td>
+                                <td>
+                                    @if ($hasil->agreed_to_share_data)
+                                        <span class="badge badge-success">Ya</span>
+                                    @else
+                                        <span class="badge badge-secondary">Tidak</span>
+                                    @endif
+                                </td>
                                 <td>
                                     Nilai : {{ $hasil->ghq_total }}
                                     <br>
@@ -939,17 +1023,20 @@
                 });
             }
 
-            function fetchDemografi() {
+            function fetchDemografi(start_date = null, end_date = null) {
                 $.ajax({
                     url: "{{ route('admin.rekap.demografi') }}",
                     type: 'GET',
+                    data: start_date && end_date ? {
+                        start_date: start_date,
+                        end_date: end_date
+                    } : {},
                     success: function(response) {
                         if (response && response.success) {
                             drawDemografiCharts(response.data);
                         }
                     },
                     error: function() {
-                        // kalau gagal demografi, cukup diam (tidak ganggu chart lain)
                     }
                 });
             }
@@ -964,7 +1051,7 @@
                 const startDate = $('#inputStartDate').val();
                 const endDate = $('#inputEndDate').val();
                 fetchData(startDate, endDate);
-                // Demografi TIDAK ikut filter tanggal (sesuai jawabanmu)
+                fetchDemografi(startDate, endDate);
             });
 
         });
