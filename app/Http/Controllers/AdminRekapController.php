@@ -23,7 +23,6 @@ class AdminRekapController extends Controller
         $ghqStatus    = $request->ghq_status;
 
         $query = Hasil::where('status_pengerjaan', 'selesai')
-            ->where('agreed_to_share_data', true)
             ->with('user');
 
         if ($startDate && $endDate) {
