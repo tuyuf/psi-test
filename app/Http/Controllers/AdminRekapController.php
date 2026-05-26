@@ -23,7 +23,6 @@ class AdminRekapController extends Controller
         $ghqStatus    = $request->ghq_status;
 
         $query = Hasil::where('status_pengerjaan', 'selesai')
-            ->where('agreed_to_share_data', true)
             ->with('user');
 
         if ($startDate && $endDate) {
@@ -163,8 +162,7 @@ class AdminRekapController extends Controller
                     FROM hasils
                     LEFT JOIN users ON hasils.user_id = users.id
                     WHERE users.level != 1
-                      AND hasils.status_pengerjaan = 'selesai'
-                      AND hasils.agreed_to_share_data = 1
+                       AND hasils.status_pengerjaan = 'selesai'
                       {$innerCondition}
                     GROUP BY hasils.user_id
                 ) h2
@@ -198,7 +196,6 @@ class AdminRekapController extends Controller
         $end   = $request->end_date;
 
         $query = Hasil::where('status_pengerjaan', 'selesai')
-            ->where('agreed_to_share_data', true)
             ->with('user');
 
         if ($start && $end) {
@@ -212,6 +209,7 @@ class AdminRekapController extends Controller
             'No',
             'Nama',
             'Waktu Tes',
+            'Share Data',
             'GHQ Skor',
             'GHQ Status',
             'DASS21 Depresi',
@@ -255,6 +253,7 @@ class AdminRekapController extends Controller
                 $i + 1,
                 $hasil->user->name ?? '',
                 $hasil->created_at->format('l, d F Y'),
+                $hasil->agreed_to_share_data ? 'Ya' : 'Tidak',
                 $hasil->last_test == 'ghq12' ? '' : $hasil->ghq_total,
                 $hasil->last_test == 'ghq12' ? '' : $ghqStatus,
                 $hasil->last_test == 'ghq12' ? '' : $hasil->dass21_depresi,
@@ -308,8 +307,7 @@ class AdminRekapController extends Controller
 
         $users = User::where('level', '!=', 1)
             ->whereHas('hasil', function ($q) use ($start, $end, $search, $lastTest, $jenisKelamin, $ghqStatus) {
-                $q->where('status_pengerjaan', 'selesai')
-                  ->where('agreed_to_share_data', 1);
+                $q->where('status_pengerjaan', 'selesai');
 
                 if ($start && $end) {
                     $q->whereBetween('created_at', [$start, $end]);

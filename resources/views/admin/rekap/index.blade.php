@@ -292,6 +292,7 @@
                             <th style="width: 5%">No</th>
                             <th style="width: 10%">Nama</th>
                             <th style="width: 10%">Waktu Tes</th>
+                            <th style="width: 5%">Share Data</th>
                             <th style="width: 15%">GHQ</th>
                             <th style="width: 15%">DASS21</th>
                             <th style="width: 15%">HSCL25</th>
@@ -305,6 +306,13 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $hasil->user->name }}</td>
                                 <td>{{ $hasil->created_at->format('l, d F Y') }}</td>
+                                <td>
+                                    @if ($hasil->agreed_to_share_data)
+                                        <span class="badge badge-success">Ya</span>
+                                    @else
+                                        <span class="badge badge-secondary">Tidak</span>
+                                    @endif
+                                </td>
                                 <td>
                                     Nilai : {{ $hasil->ghq_total }}
                                     <br>
