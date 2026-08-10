@@ -10,15 +10,17 @@
                     <div class="card-body">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <!-- <div class="col-lg-6 d-none d-lg-block bg-register-image"></div> -->
                             <div class="col-lg-12">
                                 <div class="pt-4 pb-4 px-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-3">Verifikasi Email Anda</h1>
+                                        {{-- Elemen Logo JAPSI --}}
+                                        <img src="{{ asset('img/Logo JAPSI.png') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 80px;">
+
+                                        <h1 class="h4 text-gray-900 font-weight-bold mb-3">Verifikasi Email Anda</h1>
                                         <p class="text-muted mb-2">
                                             Kami telah mengirimkan email verifikasi ke alamat:
                                         </p>
-                                        <p class="font-weight-bold text-primary mb-3">
+                                        <p class="font-weight-bold mb-3" style="color: #da728a;">
                                             {{ auth()->user()->email }}
                                         </p>
                                         <p class="text-muted mb-4">
@@ -28,14 +30,14 @@
                                             Tidak menerima email?
                                         <form class="d-inline" method="POST" action="{{ route('verification.send') }}">
                                             @csrf
-                                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
+                                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline font-weight-bold" style="color: #da728a; text-decoration: none;">
                                                 Kirim ulang email verifikasi
                                             </button>
                                         </form>
                                         </p>
                                     </div>
-                                    <p class="text-center m-0 p-0">Sudah Memiliki Akun? <a
-                                            href="{{ route('login') }}">Login</a></p>
+                                    <hr>
+                                    <p class="text-center m-0 p-0">Sudah Memiliki Akun? <a href="{{ route('login') }}" style="color: #da728a;">Login</a></p>
                                 </div>
                             </div>
                         </div>
@@ -44,10 +46,10 @@
 
             </div>
         </div>
-        <footer class="sticky-footer bg-white">
+        <footer class="sticky-footer bg-white py-3">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright © Self Healing :: Psikologi - Elektro Undip @2021</span>
+                    <span>Jasa Psikologi - Fakultas Psikologi Undip @2026</span>
                 </div>
             </div>
         </footer>

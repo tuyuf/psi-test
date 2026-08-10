@@ -3,8 +3,12 @@
 @section('content')
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="col-md-6">
-        <div class="card shadow-sm p-4">
-            <h3 class="text-center mb-4">Ubah Password</h3>
+        <div class="card shadow-lg border-0 p-4">
+            {{-- Header Logo & Judul --}}
+            <div class="text-center mb-4">
+                <img src="{{ asset('img/Logo JAPSI.png') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 80px;">
+                <h3 class="font-weight-bold text-gray-900">Ubah Password</h3>
+            </div>
 
             @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
@@ -15,9 +19,9 @@
 
             {{-- NIP --}}
             <div class="form-group mb-3">
-                <label for="username">NIP</label>
+                <label for="username">NIP / NIM</label>
                 <input type="text" name="username" class="form-control @error('username') is-invalid @enderror"
-                    value="{{ old('username') }}" placeholder="Masukkan NIP">
+                    value="{{ old('username') }}" placeholder="Masukkan NIP / NIM">
                 @error('username')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -50,8 +54,16 @@
                     placeholder="Ulangi password baru">
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Ubah Password</button>
+            {{-- Tombol Ubah Password Warna Pink Soft --}}
+            <button type="submit" class="btn btn-block text-white font-weight-bold" style="background-color: #da728a; border-color: #da728a;">Ubah Password</button>
         </form>
+
+        <hr>
+
+        {{-- Link Kembali ke Login --}}
+        <p class="text-center m-0 p-0">
+            Sudah ingat password? <a href="{{ route('login') }}">Kembali ke Login</a>
+        </p>
         </div>
     </div>
 </div>
