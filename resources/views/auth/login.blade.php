@@ -22,7 +22,10 @@
             <div class="card o-hidden border-0 shadow-lg">
                 <div class="card-body">
                     <div class="text-center mb-4">
-                        <h1 class="h4 text-gray-900">Selamat Datang di Aplikasi Test Psikologi!</h1>
+                        {{-- Elemen Logo Tambahan --}}
+                        <img src="{{ asset('img/Logo JAPSI.png') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 90px;">
+                        
+                        <h1 class="h4 text-gray-900 font-weight-bold">Selamat Datang di Screening Mental Health!</h1>
                     </div>
 
                     <form class="user" method="POST" action="{{ route('authenticate') }}">
@@ -31,7 +34,7 @@
                             <input
                                 class="form-control form-control-user @error('username') is-invalid @enderror"
                                 name="username"
-                                placeholder="NIP (Username)"
+                                placeholder="NIM (Username)"
                                 value="{{ old('username') }}">
                             @error('username')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -48,7 +51,8 @@
                             @enderror
                         </div>
 
-                        <button class="btn btn-primary btn-user btn-block" type="submit">Login</button>
+                        {{-- Tombol Login Warna Pink Soft --}}
+                        <button class="btn btn-user btn-block text-white font-weight-bold" type="submit" style="background-color: #da728a; border-color: #da728a;">Login</button>
                     </form>
 
                     <hr>
@@ -70,7 +74,7 @@
     <footer class="bg-white py-3">
         <div class="container my-auto">
             <div class="copyright text-center my-auto">
-                <span>Copyright © Self Healing :: Psikologi - Elektro Undip @2021</span>
+                <span>Jasa Psikologi - Fakultas Psikologi Undip @2026</span>
             </div>
         </div>
     </footer>

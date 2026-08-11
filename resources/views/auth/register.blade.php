@@ -18,9 +18,13 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="pt-4 pb-4 px-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Buat User Baru</h1>
+                                    <div class="text-center mb-4">
+                                        {{-- Elemen Logo JAPSI --}}
+                                        <img src="{{ asset('img/Logo JAPSI.png') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 80px;">
+                                        
+                                        <h1 class="h4 text-gray-900 font-weight-bold">Buat User Baru</h1>
                                     </div>
+
                                     <form class="user" method="POST" action="{{ route('register') }}">
                                         @csrf
 
@@ -39,15 +43,15 @@
                                                     name="alternate_email"
                                                     placeholder="contoh@gmail.com"
                                                     value="{{ old('alternate_email')}}">
-                                                    @error('alternate_email')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                            @error('alternate_email')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
 
                                         <div class="form-group">
-                                             <small class="form-text text-muted ml-3">NIP / NIM (Username) </small>
+                                             <small class="form-text text-muted ml-3">NIP / NIM (Username)</small>
                                             <input class="form-control form-control-user @error('username') is-invalid @enderror"
-                                                name="username" placeholder="Masukkan NIP" value="{{ old('username') }}">
+                                                name="username" placeholder="Masukkan NIP / NIM" value="{{ old('username') }}">
                                             @error('username')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -87,6 +91,7 @@
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
+
                                         <small class="form-text text-muted ml-3 mb-1">Masa kerja</small>
                                         <div class="form-group">
                                             <input class="form-control form-control-user @error('masa_kerja') is-invalid @enderror"
@@ -167,7 +172,7 @@
                                         </div>
 
                                         <small class="form-text text-muted ml-3 mb-1">Alamat / Domisili</small>
-                                       <div class="form-group">
+                                        <div class="form-group">
                                             <input
                                                 class="form-control form-control-user @error('alamat') is-invalid @enderror"
                                                 name="alamat" placeholder="Masukkan alamat / domisili"
@@ -176,6 +181,7 @@
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
+
                                         <small class="form-text text-muted ml-3 mb-1">Nomor telepon (Opsional)</small>
                                         <div class="form-group">
                                             <input
@@ -203,12 +209,10 @@
                                             <input type="password" name="password"
                                                 class="form-control form-control-user @error('password') is-invalid @enderror"
                                                 id="exampleInputPassword" placeholder="Minimal 8 karakter">
-                                            </small>
                                             @error('password')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-
 
                                         <div class="form-group">
                                             <input type="password" name="password_confirmation"
@@ -218,11 +222,13 @@
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        <div class="form-group">
 
-                                        <button class="btn btn-primary btn-user btn-block" type="submit">Daftar</button>
-                                        <hr>
+                                        {{-- Tombol Daftar Warna Pink Soft --}}
+                                        <button class="btn btn-user btn-block text-white font-weight-bold" type="submit" style="background-color: #da728a; border-color: #da728a;">Daftar</button>
                                     </form>
+
+                                    <hr>
+                                    
                                     <p class="text-center m-0 p-0">Sudah Memiliki Akun? <a href="{{ route('login') }}">Login</a></p>
                                 </div>
                             </div>
