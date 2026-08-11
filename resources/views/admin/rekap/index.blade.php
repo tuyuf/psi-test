@@ -186,7 +186,7 @@
                     </div>
                 </div>
 
-                {{-- Row: Masa Kerja & Unit Kerja --}}
+                {{-- Row: Angkatan & Unit Kerja --}}
                 <div class="row mb-3">
                     <div class="col-lg-6 mb-4 mb-lg-0">
                         <div class="card shadow-sm">
@@ -576,7 +576,7 @@
                             ],
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.8)',
-                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(218, 114, 138, 0.8)',
                                 'rgba(255, 205, 86, 0.8)'
                             ],
                         }]
@@ -630,7 +630,7 @@
                             ],
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.8)',
-                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(218, 114, 138, 0.8)',
                                 'rgba(255, 205, 86, 0.8)'
                             ],
                         }]
@@ -684,7 +684,7 @@
                             ],
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.8)',
-                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(218, 114, 138, 0.8)',
                             ],
 
                         }]
@@ -792,7 +792,7 @@
                         datasets: [{
                             data: [totalLaki, totalPerempuan, totalLain],
                             backgroundColor: [
-                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(218, 114, 138, 0.8)',
                                 'rgba(255, 99, 132, 0.8)',
                                 'rgba(156, 163, 175, 0.8)'
                             ],
@@ -845,7 +845,7 @@
                         datasets: [{
                             data: Object.values(usiaBuckets),
                             backgroundColor: [
-                                'rgba(59, 130, 246, 0.8)',
+                                'rgba(218, 114, 138, 0.8)',
                                 'rgba(34, 197, 94, 0.8)',
                                 'rgba(234, 179, 8, 0.8)',
                                 'rgba(239, 68, 68, 0.8)',
@@ -877,22 +877,29 @@
                     }
                 });
 
-                // --- Masa Kerja (bucket sederhana) ---
-                const mkBuckets = {
-                    '0-5 tahun': 0,
-                    '6-10 tahun': 0,
-                    '11-20 tahun': 0,
-                    '>20 tahun': 0,
-                };
+                // --- Angkatan (per tahun) ---
+                const mkBuckets = {};
+                const mkColors = [
+                    'rgba(218, 114, 138, 0.8)',
+                    'rgba(200, 130, 150, 0.8)',
+                    'rgba(230, 150, 170, 0.8)',
+                    'rgba(190, 120, 140, 0.8)',
+                    'rgba(240, 170, 185, 0.8)',
+                    'rgba(180, 110, 130, 0.8)',
+                    'rgba(250, 160, 175, 0.8)',
+                    'rgba(210, 140, 155, 0.8)',
+                ];
 
                 masaKerja.forEach(mk => {
                     const val = parseInt(mk, 10);
                     if (isNaN(val) || val < 0) return;
-                    if (val <= 5) mkBuckets['0-5 tahun']++;
-                    else if (val <= 10) mkBuckets['6-10 tahun']++;
-                    else if (val <= 20) mkBuckets['11-20 tahun']++;
-                    else mkBuckets['>20 tahun']++;
+                    const label = String(val);
+                    mkBuckets[label] = (mkBuckets[label] || 0) + 1;
                 });
+
+                const sortedLabels = Object.keys(mkBuckets).sort((a, b) => a - b);
+                const sortedData = sortedLabels.map(k => mkBuckets[k]);
+                const sortedColors = sortedLabels.map((_, i) => mkColors[i % mkColors.length]);
 
                 if (masaKerjaChart) {
                     masaKerjaChart.destroy();
@@ -902,15 +909,10 @@
                 masaKerjaChart = new Chart(mkCtx, {
                     type: 'bar',
                     data: {
-                        labels: Object.keys(mkBuckets),
+                        labels: sortedLabels,
                         datasets: [{
-                            data: Object.values(mkBuckets),
-                            backgroundColor: [
-                                'rgba(96, 165, 250, 0.8)',
-                                'rgba(52, 211, 153, 0.8)',
-                                'rgba(251, 191, 36, 0.8)',
-                                'rgba(248, 113, 113, 0.8)',
-                            ],
+                            data: sortedData,
+                            backgroundColor: sortedColors,
                         }]
                     },
                     options: {
@@ -919,7 +921,7 @@
                         plugins: {
                             title: {
                                 display: true,
-                                text: 'Distribusi Masa Kerja',
+                                text: 'Distribusi Angkatan',
                                 font: { size: 16 }
                             },
                             legend: { display: false }
@@ -981,16 +983,16 @@
                                 'rgba(34,197,94,0.8)',
                                 'rgba(234,179,8,0.8)',
                                 'rgba(239,68,68,0.8)',
-                                'rgba(56,189,248,0.8)',
-                                'rgba(129,140,248,0.8)',
+                                'rgba(230,150,170,0.8)',
+                                'rgba(190,120,140,0.8)',
                                 'rgba(16,185,129,0.8)',
                                 'rgba(250,204,21,0.8)',
                                 'rgba(248,113,113,0.8)',
                                 'rgba(96,165,250,0.8)',
                                 'rgba(74,222,128,0.8)',
                                 'rgba(251,146,60,0.8)',
-                                'rgba(125,211,252,0.8)',
-                                'rgba(216,180,254,0.8)',
+                                'rgba(240,170,185,0.8)',
+                                'rgba(220,160,175,0.8)',
                                 'rgba(148,163,184,0.8)',
                             ],
                         }]

@@ -6,7 +6,7 @@
         <div class="card shadow-lg border-0 p-4">
             {{-- Header Logo & Judul --}}
             <div class="text-center mb-4">
-                <img src="{{ asset('img/Logo JAPSI.png') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 80px;">
+                <img src="{{ asset('img/Logo-JAPSI.png') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 80px;">
                 <h3 class="font-weight-bold text-gray-900">Ubah Password</h3>
             </div>
 

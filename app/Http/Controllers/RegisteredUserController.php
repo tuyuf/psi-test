@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
         'username' => ['required','string', 'unique:'.User::class], //NIP
         'jenis_kelamin' => ['required', 'string', 'max:255'],
         'usia' => ['required', 'integer', 'min:15', 'max:99'],
-        'masa_kerja' => ['required', 'integer', 'min:0', 'max:99'],
+        'masa_kerja' => ['required', 'integer', 'min:0'],
         'unit_kerja' => ['required', 'string', 'max:100'],
         'alamat' => ['required', 'string', 'max:255'],
         'telepon' => ['nullable', 'numeric', 'max_digits:20'],

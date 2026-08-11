@@ -10,26 +10,24 @@
             <p>
                 Yth. Bapak/Ibu, saudara/i
             </p>
-            <p>Kami dari tim pengembang aplikasi kesehatan mental Universitas Diponegoro, meminta kesediaan Bapak/Ibu,
-                saudara/i dalam memberikan jawaban kondisi kesehatan mental saat ini.
+            <p>Kami dari tim Jasa Psikologi Fakultas Psikologi Universitas Diponegoro, meminta kesediaan Bapak/Ibu, Saudara/i  
+                dalam memberikan jawaban kondisi kesehatan mental saat ini.
                 Tujuan dilakukannya pengisian aplikasi ini adalah untuk memahami kondisi kesehatan mental secara berkala
-                pada pegawai
-                Universitas
-                Diponegoro.</p>
+                pada mahasiswa Universitas Diponegoro.</p>
             <div class="alert alert-warning">
                 <h5 class="alert-heading">Disclaimer</h5>
                 <hr>
-                 Hasil Skrining tes Kesehatan mental ini bukan diagnosa klinis, tetapi merupakan gambaran kondisi Kesehatan mental anda saat ini.
+                 Hasil Skrining tes Kesehatan mental ini tidak akan mempengaruhi nilai bahkan saat masa studi dan juga bukan diagnosa klinis, 
+                 tetapi merupakan gambaran kondisi Kesehatan mental anda saat ini.
                  <br>
                  <br>
-                 Apabila anda ingin mengetahui lebih lanjut diagnosa dan penjelasan mengenai Kondisi Kesehatan mental, Anda disarankan untuk menemui professional Kesehatan mental (psikolog klinis/psikiater) yang anda percaya dengan membawa hasil skrining ini.
+                 Apabila anda ingin mengetahui lebih lanjut diagnosa dan penjelasan mengenai Kondisi Kesehatan mental, 
+                 Anda disarankan untuk menemui professional Kesehatan mental (psikolog klinis/psikiater) yang anda percaya dengan membawa hasil skrining ini.
             </div>
-            <p>Hasil pengisian aplikasi ini tidak ada kaitannya dengan penilaian kinerja karyawan yang dilakukan oleh
-                atasan.
-                Namun, Bapak/Ibu akan memperoleh hasil gambaran kondisi kesehatan mental Bapak/Ibu beserta rekomendasinya
-                untuk
-                dapat
-                mengelola maupun meningkatkan kesejahteraan psikologis Bapak/Ibu.</p>
+            <p>Hasil pengisian aplikasi ini tidak ada kaitannya dengan penilaian mahasiswa/ karyawan yang dilakukan oleh
+                Fakultas, Universitas maupun atasan.
+                Namun, Bapak/Ibu/ Saudara/Saudari akan memperoleh hasil gambaran kondisi kesehatan mental Bapak/Ibu beserta rekomendasinya
+                untuk dapat mengelola maupun meningkatkan kesejahteraan psikologis Bapak/Ibu.</p>
 
             <p>Semua data yang disampaikan bersifat <em>anonymous</em> dan rahasia. Hanya pihak psikolog pemberi layanan
                 kesehatan

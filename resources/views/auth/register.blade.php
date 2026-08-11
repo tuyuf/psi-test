@@ -20,7 +20,7 @@
                                 <div class="pt-4 pb-4 px-5">
                                     <div class="text-center mb-4">
                                         {{-- Elemen Logo JAPSI --}}
-                                        <img src="{{ asset('img/Logo JAPSI.png') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 80px;">
+                                        <img src="{{ asset('img/Logo-JAPSI.png') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 80px;">
                                         
                                         <h1 class="h4 text-gray-900 font-weight-bold">Buat User Baru</h1>
                                     </div>
@@ -92,10 +92,10 @@
                                             @enderror
                                         </div>
 
-                                        <small class="form-text text-muted ml-3 mb-1">Masa kerja</small>
+                                        <small class="form-text text-muted ml-3 mb-1">Angkatan</small>
                                         <div class="form-group">
                                             <input class="form-control form-control-user @error('masa_kerja') is-invalid @enderror"
-                                                type="number" name="masa_kerja" placeholder="Masukkan lama kerja (tahun)" value="{{ old('masa_kerja') }}">
+                                                type="number" name="masa_kerja" placeholder="Masukkan angkatan (tahun)" value="{{ old('masa_kerja') }}">
                                             @error('masa_kerja')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror

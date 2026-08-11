@@ -14,7 +14,7 @@
                                 <div class="pt-4 pb-4 px-5">
                                     <div class="text-center">
                                         {{-- Elemen Logo JAPSI --}}
-                                        <img src="{{ asset('img/Logo JAPSI.png') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 80px;">
+                                        <img src="{{ asset('img/Logo-JAPSI.png') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 80px;">
 
                                         <h1 class="h4 text-gray-900 font-weight-bold mb-3">Verifikasi Email Anda</h1>
                                         <p class="text-muted mb-2">
