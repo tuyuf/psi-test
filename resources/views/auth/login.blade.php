@@ -23,7 +23,7 @@
                 <div class="card-body">
                     <div class="text-center mb-4">
                         {{-- Elemen Logo Tambahan --}}
-                        <img src="{{ asset('img/Logo-JAPSI.png') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 90px;">
+                        <img src="{{ asset('img/Logo-JAPSI.png?v=2') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 90px;">
                         
                         <h1 class="h4 text-gray-900 font-weight-bold">Selamat Datang di Screening Mental Health!</h1>
                     </div>

@@ -20,7 +20,7 @@
                                 <div class="pt-4 pb-4 px-5">
                                     <div class="text-center mb-4">
                                         {{-- Elemen Logo JAPSI --}}
-                                        <img src="{{ asset('img/Logo-JAPSI.png') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 80px;">
+                                        <img src="{{ asset('img/Logo-JAPSI.png?v=2') }}" alt="Logo JAPSI" class="img-fluid mb-3" style="max-height: 80px;">
                                         
                                         <h1 class="h4 text-gray-900 font-weight-bold">Buat User Baru</h1>
                                     </div>
