@@ -13,7 +13,7 @@
             <p>Kami dari tim Jasa Psikologi Fakultas Psikologi Universitas Diponegoro, meminta kesediaan Bapak/Ibu, Saudara/i  
                 dalam memberikan jawaban kondisi kesehatan mental saat ini.
                 Tujuan dilakukannya pengisian aplikasi ini adalah untuk memahami kondisi kesehatan mental secara berkala
-                pada mahasiswa Universitas Diponegoro.</p>
+                pada Universitas Diponegoro.</p>
             <div class="alert alert-warning">
                 <h5 class="alert-heading">Disclaimer</h5>
                 <hr>
