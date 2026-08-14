@@ -58,9 +58,9 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <small class="form-text text-muted ml-3">Nama Lengkap / Inisial</small>
+                                            <small class="form-text text-muted ml-3">Nama Lengkap</small>
                                             <input class="form-control form-control-user @error('name') is-invalid @enderror"
-                                                name="name" placeholder="Masukkan nama atau inisial" value="{{ old('name') }}">
+                                                name="name" placeholder="Masukkan nama lengkap" value="{{ old('name') }}">
                                             @error('name')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
